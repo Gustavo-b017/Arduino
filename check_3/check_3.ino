@@ -1,26 +1,15 @@
 // C++ code
-//
+// Autor: GUSTAVO BEZERRA Assumcao
 // chama a biblioteca do LCD
 # include <LiquidCrystal.h>
-//#include <DHT.h>
+#include <DHT.h>
 
 
 // INICIANDO DHT11 
 
-//  #define DHTPIN 8     // Define o pino ao qual o sensor DHT11 está conectado
-//  #define DHTTYPE DHT11   // Define o tipo de sensor DHT (DHT11 neste caso)
-//  DHT dht(DHTPIN, DHTTYPE);
-
-
-// INICAINADO MILLIS
-
-  unsigned long int tempoAntes = 0;
-  unsigned long int tempoAntes2 = 0;
-  unsigned long int tempoAntes3 = 0;
-
-// INICIANDO TEMPERATURA -- tirar
-
-int celsius = 0;
+  #define DHTPIN A4    // Define o pino ao qual o sensor DHT11 está conectado
+  #define DHTTYPE DHT11   // Define o tipo de sensor DHT (DHT11 neste caso)
+  DHT dht(DHTPIN, DHTTYPE);
 
 
 // INICIANDO LCD
@@ -33,8 +22,8 @@ int celsius = 0;
 
   const int trig = 3;
   const int echo = 2;
-  const int ledR = 5;
-  const int ledL = 6;
+  const int ledR = 6;
+  const int ledL = 5;
   const int ledV = 7;
   float dist = 0;
   
@@ -49,9 +38,7 @@ void setup()
 {
 // INICIANDO SERIAL:
   Serial.begin(9600);
-  
-// INICIANDO TEMPERATURA -- tirar  
-  pinMode(A0, INPUT);  
+    
   
 // INICIANDO O LCD:
   lcd.begin(16, 2); // define qual e o tamanho do LCD, no caso com 16 caracteres e 2 colunas
@@ -68,7 +55,7 @@ void setup()
   
 // INICIANDO DHT11
  
-// dht.begin();
+ dht.begin();
   
   
 }
@@ -101,33 +88,28 @@ void loop()
 
 // FIANLIZANDO DHT11  
   
-//  float umidade = dht.readHumidity();
-//  float temperatura = dht.readTemperature();  
+  float umidade = dht.readHumidity();
+  float temperatura = dht.readTemperature();  
   
 // Verifica se a leitura do sensor foi bem-sucedida
-//  if (isnan(umidade) || isnan(temperatura)) {
-//    Serial.println("Erro ao ler o sensor DHT!");
-//  } else {
-//    Serial.print("Umidade: ");
-//    Serial.print(umidade);
-//    Serial.print(" %\t");
-//    Serial.print("Temperatura: ");
-//    Serial.print(temperatura);
-//    Serial.println(" °C"); 
-//  }  
-  
-// FIANLIZANDO TEMPERATURA -- tirar 
-    celsius = map(((analogRead(A0) - 20) * 3.04), 0, 1023, -40, 125);
-    Serial.print(celsius);
-    Serial.print(" °C ");
+  if (isnan(umidade) || isnan(temperatura)) {
+    Serial.println("Erro ao ler o sensor DHT!");
+  } else {
+    Serial.print("Umidade: ");
+    Serial.print(umidade);
+    Serial.print(" %\t");
+    Serial.print("Temperatura: ");
+    Serial.print(temperatura);
+    Serial.println(" °C"); 
+  }  
   
   
 // INICIO DA ESTRUTURA DE CONDICAO
-  if (dist <= 100)
+  if (dist <= 20)
   {
-  	digitalWrite (ledR, LOW); // desliga o led
+    digitalWrite (ledR, LOW); // desliga o led
     digitalWrite (ledL, LOW); // desliga o led
-   	digitalWrite (ledV, HIGH); // liga o led definido
+    digitalWrite (ledV, HIGH); // liga o led definido
     digitalWrite(buzzer, LOW); // deixa desliagado o buzzer
     lcd.print("estoque cheio");
     delay(1500);
@@ -136,13 +118,17 @@ void loop()
     lcd.print(" luz");
     delay(1500);
     lcd.clear();
-    lcd.print(celsius);
+    lcd.print(temperatura);
     lcd.print(" Celsius");
+    delay(1500);
+    lcd.clear();
+    lcd.print(umidade);
+    lcd.print(" umidade");
     delay(1500);
     lcd.clear();
   }
   
-  else if ( dist >100 && dist <= 200) 
+  else if ( dist >20 && dist <= 80) 
   {
     digitalWrite (ledR, LOW); // desliga o led
     digitalWrite (ledL, HIGH); // liga o led definido
@@ -156,17 +142,21 @@ void loop()
     lcd.print(" luz");
     delay(1500);
     lcd.clear();
-    lcd.print(celsius);
+    lcd.print(temperatura);
     lcd.print(" Celsius");
     delay(1500);
     digitalWrite(buzzer, LOW);
+    lcd.clear();
+    lcd.print(umidade);
+    lcd.print(" umidade");
+    delay(1500);
     lcd.clear();
   }
   else 
   {
     digitalWrite (ledR, HIGH); // liga o led definido
     digitalWrite (ledL, LOW); // desliga o led
-   	digitalWrite (ledV, LOW); // desliga o led
+    digitalWrite (ledV, LOW); // desliga o led
     digitalWrite (buzzer, HIGH); // liga o buzzer
     lcd.print("estoque vazio");
     delay(1500);
@@ -175,9 +165,14 @@ void loop()
     lcd.print(" luz");
     delay(1500);
     lcd.clear();
-    lcd.print(celsius);
+    lcd.print(temperatura);
     lcd.print(" Celsius");
     delay(1500);
     lcd.clear();
+    lcd.print(umidade);
+    lcd.print(" umidade");
+    delay(1500);
+    lcd.clear();
   }
+  
 }
