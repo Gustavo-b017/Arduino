@@ -1,5 +1,5 @@
 // C++ code
-//
+// Autor: GUSTAVO BEZERRA Assumcao
 // chama a biblioteca do LCD
 # include <LiquidCrystal.h>
 #include <DHT.h>
