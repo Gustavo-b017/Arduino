@@ -1,0 +1,268 @@
+[
+    {
+        "id": "d60469fd60401f15",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "a3ee3b4e598e07a6",
+        "type": "inject",
+        "z": "d60469fd60401f15",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "ola, meu nobre!!",
+        "payloadType": "str",
+        "x": 240,
+        "y": 300,
+        "wires": [
+            [
+                "23632bd746a899c7"
+            ]
+        ]
+    },
+    {
+        "id": "23632bd746a899c7",
+        "type": "debug",
+        "z": "d60469fd60401f15",
+        "name": "debug 1",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 520,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "5275fb73b6b1ee55",
+        "type": "inject",
+        "z": "d60469fd60401f15",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 100,
+        "y": 400,
+        "wires": [
+            [
+                "1c70f2f06742cf68"
+            ]
+        ]
+    },
+    {
+        "id": "25b4de7ba4a09d3d",
+        "type": "debug",
+        "z": "d60469fd60401f15",
+        "name": "debug 2",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 440,
+        "y": 500,
+        "wires": []
+    },
+    {
+        "id": "1c70f2f06742cf68",
+        "type": "http request",
+        "z": "d60469fd60401f15",
+        "name": "",
+        "method": "GET",
+        "ret": "txt",
+        "paytoqs": "ignore",
+        "url": "https://api.openweathermap.org/data/2.5/weather?lat=-23.5325&lon=-46.7917&appid=a669c7581a465a7a7c6ca5cea61e378f&units=metric",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 210,
+        "y": 480,
+        "wires": [
+            [
+                "bb5bf4db62853d70"
+            ]
+        ]
+    },
+    {
+        "id": "bb5bf4db62853d70",
+        "type": "json",
+        "z": "d60469fd60401f15",
+        "name": "",
+        "property": "payload",
+        "action": "",
+        "pretty": false,
+        "x": 250,
+        "y": 560,
+        "wires": [
+            [
+                "c925183ea1440643",
+                "c35004890ac221e4",
+                "25b4de7ba4a09d3d"
+            ]
+        ]
+    },
+    {
+        "id": "c925183ea1440643",
+        "type": "change",
+        "z": "d60469fd60401f15",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload.main.temp",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 440,
+        "y": 420,
+        "wires": [
+            [
+                "c2982c3a4331a1b7"
+            ]
+        ]
+    },
+    {
+        "id": "c2982c3a4331a1b7",
+        "type": "ui_gauge",
+        "z": "d60469fd60401f15",
+        "name": "",
+        "group": "1a29514527e989e7",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "gtype": "donut",
+        "title": "Ta caliente!!",
+        "label": "units",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "50",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 610,
+        "y": 380,
+        "wires": []
+    },
+    {
+        "id": "c35004890ac221e4",
+        "type": "change",
+        "z": "d60469fd60401f15",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload.main.temp_min",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 420,
+        "y": 600,
+        "wires": [
+            [
+                "8b5c33fc8fcee7b0"
+            ]
+        ]
+    },
+    {
+        "id": "8b5c33fc8fcee7b0",
+        "type": "ui_gauge",
+        "z": "d60469fd60401f15",
+        "name": "",
+        "group": "1a29514527e989e7",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "little hot",
+        "label": "units",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "100",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 620,
+        "y": 600,
+        "wires": []
+    },
+    {
+        "id": "1a29514527e989e7",
+        "type": "ui_group",
+        "name": "Default",
+        "tab": "aeee6553553fe46f",
+        "order": 1,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "aeee6553553fe46f",
+        "type": "ui_tab",
+        "name": "Home",
+        "icon": "dashboard",
+        "disabled": false,
+        "hidden": false
+    }
+]
